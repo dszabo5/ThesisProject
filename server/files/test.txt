@@ -1,0 +1,13 @@
+TestBackend
+
+You can find a thorough explanation on creating your Flask API endpoints, creating new models, database migrations and using the flask admin in this documentation, this is because this template was created with the same structure and concepts as the Flask API Template.
+
+Manual Installation (only if needed)
+
+Back-End Manual Installation:
+
+It is recommended to install the backend first, make sure you have Python 3.8+, Pipenv and a database engine (Postgres recommended)
+
+Install the python packages: $ pipenv install
+Create a .env file based on the .env.example: $ cp .env.example .env
+Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the values with your database information:
