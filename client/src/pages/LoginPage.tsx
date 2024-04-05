@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 
+import { Typography, TextField, Button, Box, Container } from '@mui/material';
+
 const LoginPage: React.FC = () => {
 
     const [email, setEmail] = useState<string>("");
@@ -24,32 +26,38 @@ const LoginPage: React.FC = () => {
   
 
   return (
-    <div>
-      <h1>Log Into Your Account</h1>
-      <form>
-        <div>
-          <label>Email: </label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            id=""
-          />
-        </div>
-        <div>
-          <label>Password: </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            id=""
-          />
-        </div>
-        <button type="button" onClick={() => logInUser()}>
-          Submit
-        </button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+            <Box sx={{ marginTop: 4, textAlign: 'center' }}>
+                <Typography variant="h4" gutterBottom>
+                    Log Into Your Account
+                </Typography>
+                <form>
+                    <Box sx={{ marginBottom: 4, marginTop:5 }}>
+                        <TextField
+                            label="Email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                            variant="outlined"
+                        />
+                    </Box>
+                    <Box sx={{ marginBottom: 4 }}>
+                        <TextField
+                            label="Password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            fullWidth
+                            variant="outlined"
+                        />
+                    </Box>
+                    <Button variant="contained" onClick={() => logInUser()}>
+                        Submit
+                    </Button>
+                </form>
+            </Box>
+        </Container>
   );
 };
 

@@ -1,0 +1,128 @@
+Enterprise Server 3.10.9
+March 20, 2024
+
+📣 This is not the latest release of Enterprise Server. Please use the latest release for the latest security, performance, and bug fixes.
+
+Warning: A change to MySQL in GitHub Enterprise Server 3.9 and later may impact the performance of your instance. Before you upgrade, make sure you've read the "Known issues" section of these release notes.
+3.10.9: Security fixes
+
+HIGH: An attacker with an Administrator role in GitHub Enterprise Server could gain SSH root access via remote code execution. GitHub has requested CVE ID CVE-2024-2469 for this vulnerability, which was reported via the GitHub Bug Bounty program.
+
+HIGH: An attacker with an editor role in the Management Console could gain SSH access to the instance by command injection when configuring GeoJSON settings. GitHub has requested CVE ID CVE-2024-2443 for this vulnerability, which was reported via the GitHub Bug Bounty program.
+
+Packages have been updated to the latest security versions.
+
+3.10.9: Bug fixes
+
+In some cases, storage initialization on a new instance launch could cause EBS-backed data volumes to not be detected correctly.
+
+Redundant messages caused an increase in the volume of events logged in /var/log/syslog.
+
+Administrators could initiate an SSH audit that unknowingly unverified all SSH keys.
+
+Attributes used to debug LDAP issues were not included in system logs.
+
+In some cases, the codeload service could panic during shutdown and not terminate gracefully.
+
+On an instance in a cluster configuration with high availability enabled, the ghe-spokesctl command failed when run on a replica node.
+
+If an administrator lost SSH access to an instance, authentication from the hypervisor console using the password for the root site administrator would fail.
+
+On an instance with GitHub Actions enabled, GitHub Actions workflows that deployed GitHub Pages sites failed with the following error: Error: Deployment failed, try again later.
+
+Organizations using projects (classic) returned an error log about a soon-to-be deprecated MySQL feature when viewing a project.
+
+On an instance in a cluster configuration, Jupyter notebooks did not render correctly.
+
+On an instance in a cluster configuration with many nodes, requests to the REST API for managing GitHub Enterprise Server would exceed the instance's HTTP timeouts.
+
+On an instance with a GitHub Advanced Security license, in some cases, when a user deleted a custom pattern for secret scanning, GitHub Enterprise Server failed to close or delete the pattern's alerts.
+
+When an administrator set a policy to require two-factor authentication (2FA) for an enterprise, a message incorrectly indicated that users without 2FA enabled on their account would be removed from the enterprise. These users will be removed from repositories and organizations in the enterprise, but not from the enterprise itself.
+
+Some API endpoints for projects did not properly filter target repositories based on the users access.
+
+On an instance with a GitHub Advanced Security license, viewing a secret scanning alert as a user without the security manager role would return a 500 error if the alert was generated from a Git tag instead of a normal commit.
+
+When using GitHub Enterprise Importer to import repositories, ghost users in archive metadata files would cause an error when generating a list of migration conflicts using ghe-migrator conflicts.
+
+After an administrator ran ghe-saml-mapping-csv, the output did not include the corresponding SQL query.
+
+During a configuration run prompted by the delayed restart of the notebooks service, a container validation warning appeared in system logs.
+
+On an instance in a cluster configuration, rebuilds of GitHub Pages sites failed if no replicas of the GitHub Pages data were available (for example, on a newly restored cluster).
+
+In some cases, manual repository maintenance using ghe-spokesctl would fail with the following error: panic: runtime error: invalid memory address or nil pointer dereference.
+
+On an instance with code scanning enabled, upgrades to GitHub Enterprise Server version 3.9 or 3.10 could be slow if a large number of code scanning analyses were present on the instance.
+
+On an instance with a GitHub Advanced Security license, the speed of migration for code scanning analyses is increased during an upgrade from GitHub Enterprise Server 3.10 or earlier.
+
+3.10.9: Changes
+
+Gists can be deleted using the Purge Gist button on the Deleted Gists page in Staff Tools.
+
+People deploying a GitHub Enterprise Server instance in AWS can now deploy in an environment that uses Instance Metadata Service Version 2 (IMDSv2).
+
+On an instance in a cluster configuration, MySQL replica nodes can be configured to skip database seeding.
+
+The payload for the push webhook event is now limited to 2,048 commits. If there are more than 2,048 commits in a push, the webhook payload for that push will not contain any commits. If you need to fetch commit information, you can use the Commits endpoints of the REST API. For more information, see "Webhook events and payloads" and "REST API endpoints for commits."
+
+3.10.9: Known issues
+
+Custom firewall rules are removed during the upgrade process.
+
+During the validation phase of a configuration run, a No such object error may occur for the Notebook and Viewscreen services. This error can be ignored as the services should still correctly start.
+
+If the root site administrator is locked out of the Management Console after failed login attempts, the account does not unlock automatically after the defined lockout time. Someone with administrative SSH access to the instance must unlock the account using the administrative shell. For more information, see "Troubleshooting access to the Management Console."
+
+If an instance is configured to forward logs to a target server with TLS enabled, certificate authority (CA) bundles that a site administrator uploads using ghe-ssl-ca-certificate-install are not respected, and connections to the server fail.
+
+The mbind: Operation not permitted error in the /var/log/mysql/mysql.err file can be ignored. MySQL 8 does not gracefully handle when the CAP_SYS_NICE capability isn't required, and outputs an error instead of a warning.
+
+After an administrator upgrades from GitHub Enterprise Server 3.7 or 3.8, to 3.9 or 3.10, MySQL may not start back up. For more information, see "Known issues with upgrades to your instance."
+
+After an administrator upgrades from GitHub Enterprise Server 3.7 or 3.8 to 3.9 or 3.10, I/O utilization will increase, and in some cases the instance's performance will be impacted. Reduced performance is due to the database server being upgraded from MySQL 5.7 to MySQL 8.0. For more information, see "Known issues with upgrades to your instance."
+
+In rare circumstances, a small instance with both high availability and GitHub Actions configured may report that MSSQL replication is unhealthy after many upgrades with full upgrade packages. If you encounter this issue, contact GitHub Support.
+
+On an instance in a cluster configuration with high availability configured, ghe-config-apply times out while waiting for hookshot-go to start on replica application nodes.
+
+After an administrator enables maintenance mode from the instance's Management Console UI using Firefox, the administrator is redirected to the Settings page, but maintenance mode is not enabled. To work around this issue, use a different browser.
+
+On an instance hosted in AWS, system time may lose synchronization with Amazon's servers after an administrator reboots the instance.
+
+On an instance with the HTTP X-Forwarded-For header configured for use behind a load balancer, all client IP addresses in the instance's audit log erroneously appear as 127.0.0.1.
+
+In GitHub Enterprise Server 3.10 and later, the requirements for TLS security levels have changed due to an upgrade to containers in the underlying OS. On an instance with GitHub Actions enabled and a custom TLS certificate, users may experience disruptions with workflow runs if the TLS certificate uses weak encryption. Workflow runs will not trigger, and the following error message will appear in system logs for babeld.
+
+CA certificate key too weak
+To resolve this issue, confirm that your certificate complies with level 2 of the OpenSSL security specification. For more information, see SSL_CTX_set_security_level in the OpenSSL docs. For more information about reviewing your instance's logs, see "About system logs".
+
+If the error appears in babeld logs because your TLS certificate does not comply with level 2 of the specification, you must create and upload a new certificate with stronger security before you upgrade to GitHub Enterprise Server 3.10 or later. For more information, see "Configuring TLS."
+
+On an instance with GitHub Actions enabled, after an upgrade from GitHub Enterprise Server 3.8 or earlier, an internal exception could prevent successful completion of some operations, like upgrades or the configuration of new replica nodes for high availability. If this issue occurs, administrators may see the following error in /data/user/common/ghe-config.log.
+
+Error occurred while executing servicing step 'Clone datatier login to secondary replica' for component CopyAvailabilityGroupSqlLogins during CopyAvailabilityGroupSqlLogins: Object reference not set to an instance of an object.
+To resolve this issue, upgrade to the latest patch release of GitHub Enterprise Server.
+
+In some situations, large .adoc files stored in a repository do not render properly in the web UI. The raw contents are still available to view as plaintext.
+
+On an instance in a cluster configuration, restoration of a backup using ghe-restore will exit prematurely if Redis has not restarted properly.
+
+The HAProxy version has been updated in this release. You may encounter elevated error rates when HAProxy is upgraded as part of a hotpatch upgrade to a GitHub Enterprise Server instance. These elevated error rates should resolve within 5 minutes of the hotpatch being applied.
+
+Please note, when performing a hotpatch upgrade to GitHub Enterprise Server version 3.10.4 or higher you will encounter this known issue only if you are hotpatching from GitHub Enterprise Server version 3.10.3 or lower .
+
+On an instance with GitHub Actions enabled, Actions workflows that deploy GitHub Pages sites may fail with the following error:
+
+Error: Deployment failed, try again later.
+To fix this issue, connect to any of the instance's nodes using SSH, then run the following commands.
+
+if [ -d "$CHROOT_PATH/data/pages-untar" ] ; then
+  rm -rf "$CHROOT_PATH/data/pages-untar"
+fi
+pages_untar_image_tag="$(cat "$CHROOT_PATH/data/docker-image-tags/pages_untar_image_tag")"
+id="$(docker create "pages-untar:$pages_untar_image_tag")"
+sudo docker cp "$id:/data/pages-untar" "$BASE_PATH/$CHROOT_PATH/data/pages-untar/"
+docker rm "$id"

@@ -184,13 +184,8 @@ def run_comparison():
     if len(datasets) == 0:
         print('No datasets selected')
         return jsonify({'error': 'No datasets selected'}), 400
-    print(file)
-    print(datasets)
 
     result = compare(file, datasets, 10)
-
-    print(result)
-    print(jsonify(result))
 
     return jsonify(result)
 

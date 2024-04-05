@@ -3,7 +3,7 @@ import httpClient from "../httpClient";
 import { User } from "../types";
 
 import MiniDrawer from "../components/siderbar";
-import {Box, Container} from '@mui/material';
+import { Box, Container, Typography, Button } from '@mui/material';
 
 const LandingPage: React.FC = () => {
 
@@ -21,35 +21,52 @@ const LandingPage: React.FC = () => {
     }, []);
 
     return (
-        <div>
-          {user != null ? (
-            <Box sx={{display:'flex', marginTop:'100px'}}>
-            <MiniDrawer/>
-            <Container fixed>
-              <h1>Welcome to the Cloud Security Dashboard</h1>
-            <div>
-              <h2>Logged in</h2>
-              <h3>ID: {user.id}</h3>
-              <h3>Email: {user.email}</h3>
-
-            </div>
-            </Container>
-            </Box>
-          ) : (
-            <div>
-              <h1>Welcome to the Cloud Security Dashboard</h1>
-              <p>You are not logged in</p>
-              <div>
-                <a href="/login">
-                  <button>Login</button>
-                </a>
-                <a href="/register">
-                  <button>Register</button>
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
+      <Box sx={{ padding: 2, height: '100vh' }}>
+                {user != null ? (
+                  <Box>
+                    <MiniDrawer />
+                  <Container sx={{ width: '80%', margin: 'auto', backgroundColor: '#f5f5f5', padding:5 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Box sx={{ marginLeft: '20px', textAlign: 'center' }}>
+                            <Typography variant="h3" sx={{ fontWeight: 'bold' }} gutterBottom>
+                                Welcome to the Cloud Security Dashboard
+                            </Typography>
+                            <Box sx={{ textAlign: 'center', marginTop:4}}>
+                                <Typography variant="h4" gutterBottom>
+                                    Logged in
+                                </Typography>
+                                <Typography variant="h4" gutterBottom>
+                                    ID: {user.id}
+                                </Typography>
+                                <Typography variant="h4" gutterBottom>
+                                    Email: {user.email}
+                                </Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+                    </Container>
+                    </Box>
+                ) : (
+                  <Container sx={{ width: '50%', margin: 'auto', backgroundColor: '#f5f5f5', padding:5 }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <Typography variant="h3" sx={{ fontWeight: 'bold' }} gutterBottom>
+                            Welcome to the Cloud Security Dashboard
+                        </Typography>
+                        <Typography variant="body1" sx={{ marginTop:6, marginBottom:6 }} gutterBottom>
+                            You are not logged in
+                        </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                            <Button variant="contained" href="/login" sx={{ width: '150px', marginRight: '10px' }}>
+                                Login
+                            </Button>
+                            <Button variant="contained" href="/register" sx={{ width: '150px' }}>
+                                Register
+                            </Button>
+                        </Box>
+                    </Box>
+                    </Container>
+                )}
+        </Box>
       );
 };
 

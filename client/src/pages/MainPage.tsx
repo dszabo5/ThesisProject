@@ -3,7 +3,7 @@ import httpClient from "../httpClient";
 import { useNavigate } from 'react-router-dom';
 
 import MiniDrawer from "../components/siderbar";
-import {Box, Container} from '@mui/material';
+import { Box, Container, Typography, Button, List, ListItem, ListItemText, Checkbox } from '@mui/material';
 
 const MainPage: React.FC = () => {
 
@@ -40,23 +40,17 @@ const MainPage: React.FC = () => {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, filename: string) => {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-        setSelectedFile(filename);
-    } else {
-        setSelectedFile(null);
-    }
-  };
+  const handleFileChange = (filename: string) => {
+    setSelectedFile(prevSelectedFile => (prevSelectedFile === filename ? null : filename));
+};
 
-  const handleDatasetChange = (event: React.ChangeEvent<HTMLInputElement>, filename: string) => {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-        setSelectedDatasets(prevSelectedDatasets => [...prevSelectedDatasets, filename]);
-    } else {
-        setSelectedDatasets(prevSelectedDatasets => prevSelectedDatasets.filter(file => file !== filename));
-    }
-  };
+const handleDatasetChange = (filename: string) => {
+    setSelectedDatasets(prevSelectedDatasets =>
+        prevSelectedDatasets.includes(filename)
+            ? prevSelectedDatasets.filter(file => file !== filename)
+            : [...prevSelectedDatasets, filename]
+    );
+};
 
 
   const handleRunModel = async () => {
@@ -71,48 +65,36 @@ const MainPage: React.FC = () => {
 
   return (
 
-    <Box sx={{display:'flex', marginTop:'100px'}}>
-    <MiniDrawer/>
-    <Container fixed>
-    <div>
-      <div>
-        <h2>Files</h2>
-        <ul>
-          {files.map((file, index) => (
-            <li key={index}>
-              <label>
-                <input
-                  type="radio"
-                  checked={selectedFile === file}
-                  onChange={(event) => handleFileChange(event, file)}
-                />
-                {file}
-              </label>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h2>Datasets</h2>
-        <ul>
-          {datasets.map((file, index) => (
-            <li key={index}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedDatasets.includes(file)}
-                  onChange={(event) => handleDatasetChange(event, file)}
-                />
-                {file}
-              </label>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <button onClick={handleRunModel}>Run Model</button>
-    </div>
-    </Container>
-    </Box>
+    <Box sx={{ display: 'flex', marginTop: '100px' }}>
+            <MiniDrawer />
+            <Container fixed>
+                <div>
+                    <Box sx={{ marginBottom: '20px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
+                        <Typography variant="h4">Files</Typography>
+                        <List>
+                            {files.map((file, index) => (
+                                <ListItem key={index} button onClick={() => handleFileChange(file)}>
+                                    <ListItemText primary={file} />
+                                    <Checkbox checked={selectedFile === file} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+                    <Box sx={{ border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
+                        <Typography variant="h4">Datasets</Typography>
+                        <List>
+                            {datasets.map((dataset, index) => (
+                                <ListItem key={index} button onClick={() => handleDatasetChange(dataset)}>
+                                    <ListItemText primary={dataset} />
+                                    <Checkbox checked={selectedDatasets.includes(dataset)} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+                    <Button variant="contained" onClick={handleRunModel}>Run Model</Button>
+                </div>
+            </Container>
+        </Box>
   );
 };
 

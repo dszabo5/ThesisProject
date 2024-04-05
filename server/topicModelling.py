@@ -81,7 +81,7 @@ def perform_topic_modeling(filename):
             text = remove_stopwords(temp, stop_words)
 
             if len(text) < 50:
-                 text = ''
+                 text = ""
 
         except:
             text = ""

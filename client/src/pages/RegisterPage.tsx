@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import httpClient from "../httpClient";
 
+import { Box, Container, Typography, Button, TextField } from '@mui/material';
+
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -23,41 +25,48 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Create an account</h1>
-      <form>
-      <div>
-          <label>Username: </label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            id=""
-          />
-        </div>
-        <div>
-          <label>Email: </label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            id=""
-          />
-        </div>
-        <div>
-          <label>Password: </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            id=""
-          />
-        </div>
-        <button type="button" onClick={() => registerUser()}>
-          Submit
-        </button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 4, textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Create an account
+        </Typography>
+        <form>
+          <Box sx={{ marginTop: 4, marginBottom: 4 }}>
+            <TextField
+              label="Username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+          <Box sx={{ marginBottom: 4 }}>
+            <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+          <Box sx={{ marginBottom: 4 }}>
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+          <Button variant="contained" onClick={() => registerUser()}>
+            Submit
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 };
 

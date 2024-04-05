@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import httpClient from "../httpClient";
 
 import MiniDrawer from "../components/siderbar";
-import {Box, Container} from '@mui/material';
+import { Box, Container, Typography, Button, Grid, Paper } from '@mui/material';
 
 const FileUploadComponent: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -47,19 +47,36 @@ const FileUploadComponent: React.FC = () => {
   };
 
   return (
-    <div>
-      <Box sx={{display:'flex', marginTop:'100px'}}>
-      <MiniDrawer/>
-      <Container fixed>
-      <h1>Upload Files:</h1>
-      <input type="file" accept=".xlsx" onChange={handleChange} ref={fileInputRef} />
-      <button onClick={handleUpload}>Upload Dataset</button>
-
-      <input type="file" accept=".txt" onChange={handleChange} ref={fileInputRef} />
-      <button onClick={handleUpload}>Upload File</button>
-      </Container>
-      </Box>
-    </div>
+    <Container maxWidth="md">
+      <MiniDrawer />
+            <Box sx={{ marginTop: 4, display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ marginLeft: 4 }}>
+                    <Typography variant="h3" gutterBottom>
+                        Upload Files:
+                    </Typography>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <Paper sx={{ backgroundColor: '#f5f5f5', padding: 2, marginBottom: 2 }}>
+                            <Typography variant="h5" align="center" gutterBottom>
+                                Upload Dataset
+                            </Typography>
+                            <input type="file" accept=".xlsx" onChange={handleChange} ref={fileInputRef} />
+                            <Button variant="contained" onClick={handleUpload} sx={{ marginLeft: 1 }}>
+                                Upload Dataset
+                            </Button>
+                        </Paper>
+                        <Paper sx={{ backgroundColor: '#f5f5f5', padding: 2 }}>
+                            <Typography variant="h5" align="center" gutterBottom>
+                                Upload File
+                            </Typography>
+                            <input type="file" accept=".txt" onChange={handleChange} ref={fileInputRef} />
+                            <Button variant="contained" onClick={handleUpload} sx={{ marginLeft: 1 }}>
+                                Upload File
+                            </Button>
+                        </Paper>
+                    </Box>
+                </Box>
+            </Box>
+        </Container>
   );
 };
 
